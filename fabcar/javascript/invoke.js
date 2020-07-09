@@ -40,8 +40,9 @@ async function main() {
         // Submit the specified transaction.
         // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
         // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR12', 'Dave')
-        await contract.submitTransaction('createUser', 'USER6', 'Tom', '7@naver.com', '777-7777-7777', 'dsfwwww');
-        const result = await contract.evaluateTransaction('queryUser', 'USER6');
+        // await contract.submitTransaction('createBlog', 'USER2', 'BLOG3', 'python');
+        await contract.submitTransaction('changeBlog', 'BLOG1', '안녕하세용 이것은 수정 내용입니당');
+        const result = await contract.evaluateTransaction('queryBlog', 'BLOG1');
         console.log(`Transaction has been submitted:${result.toString()}`);
 
         // Disconnect from the gateway.

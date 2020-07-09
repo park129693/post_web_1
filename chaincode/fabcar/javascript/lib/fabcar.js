@@ -84,12 +84,21 @@ class FabUser extends Contract {
     }
 
     async queryUser(ctx, userNumber) {
-        const userAsBytes = await ctx.stub.getState(userNumber); // get the car from chaincode state
+        const userAsBytes = await ctx.stub.getState(userNumber); // get the userr from chaincode state
         if (!userAsBytes || userAsBytes.length === 0) {
             throw new Error(`${userNumber} does not exist`);
         }
         console.log(userAsBytes.toString());
         return userAsBytes.toString();
+    }
+
+    async queryBlog(ctx, blogNumber) {
+        const blogAsBytes = await ctx.stub.getState(blogNumber); // get the bolg from chaincode state
+        if (!blogAsBytes || blogAsBytes.length === 0) {
+            throw new Error(`${blogNumber} does not exist`);
+        }
+        console.log(blogAsBytes.toString());
+        return blogAsBytes.toString();
     }
 
     async createUser(ctx, userNumber, username, email, phone, words) {
@@ -105,6 +114,25 @@ class FabUser extends Contract {
 
         await ctx.stub.putState(userNumber, Buffer.from(JSON.stringify(users)));
         console.info('============= END : Create User ===========');
+    }
+
+    async createBlog(ctx,userNumber, blogNumber, title, desc) {
+        console.info('============= START : Create Blog ===========');
+        const userAsBytes = await ctx.stub.getState(userNumber); // get the user from chaincode state
+        if (!userAsBytes || userAsBytes.length === 0) {
+            throw new Error(`${userNumber} does not exist`);
+        }
+        const users = await JSON.parse(userAsBytes.toString());
+
+        const blogs = {
+            title,
+            docType: 'blog',
+            desc,
+            author:users,
+        };
+
+        await ctx.stub.putState(blogNumber, Buffer.from(JSON.stringify(blogs)));
+        console.info('============= END : Create Blog ===========');
     }
 
     async queryAllUsers(ctx) {
@@ -158,6 +186,20 @@ class FabUser extends Contract {
 
         await ctx.stub.putState(userNumber, Buffer.from(JSON.stringify(users)));
         console.info('============= END : changeCarOwner ===========');
+    }
+
+    async changeBlog(ctx, blogNumber, newDesc) {
+        console.info('============= START : changeBlog ===========');
+
+        const blogAsBytes = await ctx.stub.getState(blogNumber); // get the user blog chaincode state
+        if (!blogAsBytes || blogAsBytes.length === 0) {
+            throw new Error(`${blogNumber} does not exist`);
+        }
+        const blogs = JSON.parse(blogAsBytes.toString());
+        blog.desc = newDesc;
+
+        await ctx.stub.putState(blogNumber, Buffer.from(JSON.stringify(blogs)));
+        console.info('============= END : changeBlog ===========');
     }
 
 }
