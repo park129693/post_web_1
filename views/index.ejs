@@ -39,5 +39,37 @@
     
       <a href="/content"><button type="button" class="btn btn-primary " >CREATE</button></a>
 
+
+        <table class="table table-secondary">
+          <thead>
+            <tr>
+              <th scope="col">NO</th>
+              <th scope="col">KEY</th>
+              <th scope="col">USERNAME</th>
+              <th scope="col">EMAIL</th>
+              <th scope="col">PHONE</th>
+              <th scope="col">WORDS</th>
+             
+            </tr>
+          </thead>
+          <tbody>
+          <% for(i=0;i<user.length;i++) { %>
+            <tr>
+              <th scope="row"><%= i+1 %></th>
+              <td><%= user[i].Key %></td>
+              <td><%= user[i].Record.username %></td>
+              <td><%= user[i].Record.email %></td>
+              <td><%= user[i].Record.phone %></td>
+              <td><%= user[i].Record.words %></td>
+             
+                
+              </td>
+              
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+
+        <a href="/content"><button type="button" class="btn btn-primary " >CREATE USER</button></a>
   </section>
   

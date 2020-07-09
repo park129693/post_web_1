@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 var User = require('../models/user')
 var Content = require('../models/listModel')
+var queryUtil = require('../utils/Util')
 
 
 // Authentication Middleware
@@ -27,13 +28,18 @@ router.use(function(req,res,next){
     next();
   });
 // // Main Page
-router.get("/", loggedInOnly, (req, res ,done) => {
-    Content.find((err, result)=>{
+router.get("/", loggedInOnly, async (req, res ,done) => {
+
+    var userData = await queryUtil.query_all_users()
+    // console.log(userData)
+    await Content.find((err, result)=>{
       if(err) {
         done(err)
       }
+      var user =  JSON.parse(userData)
+      console.log(userData)
       console.log(req.user.username)
-      res.render("index", { username: req.user.username , data:result});
+      res.render("index", { username: req.user.username , data:result, user:user});
     })
     
   });
@@ -145,4 +151,21 @@ router.use((err, req, res) => {
 
 return router;
 }
+
+router.get('/createuser', loggedInOnly,(req,res,next)=>{
+  res.render('createuser')
+})
+
+router.post('/createuser', async (req, res, next)=>{
+  var KEY = req.body.KEY
+  var username = req.body.username
+  var email = req.body.email
+  var phone = req.body.phone
+  var words = req.body.words
+
+  await queryUtil.create_user(KEY, username, email, phone, words)
+  res.redirect('/')
+
+})
+
 module.exports = authenticate;
