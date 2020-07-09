@@ -1,0 +1,43 @@
+<%- include('_header.ejs') -%>
+<section class="col-xs-12">
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h2>Welcome <%= username %></h2>
+      </div>
+    </div>
+  
+    <table class="table table-secondary">
+      <thead>
+        <tr>
+          <th scope="col">NO</th>
+          <th scope="col">TITLE</th>
+          <th scope="col">DESCRIPTION</th>
+          <th scope="col">EMAIL</th>
+          <th scope="col">AUTHOR</th>
+          <th scope="col">DATE</th>
+          <th scope="col">EDIT</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% for(i=0;i<data.length;i++) { %>
+        <tr>
+          <th scope="row"><%= i+1 %></th>
+          <td><%= data[i].title %></td>
+          <td><%= data[i].description %></td>
+          <td><%= data[i].email %></td>
+          <td><%= data[i].author %></td>
+          <td><%= data[i].createAt %></td>
+          <td><form method="POST" action="/delete/<%= data[i]._id %>" onsubmit="return confirm('정말 삭제하시겠습니까?')"><button type="submit" class="btn btn-danger">삭제</button></form>
+            <!-- <form method="GET" action="/edit/<%= data[i]._id %>" ><button type="submit" class="btn btn-danger">수정</button></form> -->
+          </td>
+          
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+    
+      <a href="/content"><button type="button" class="btn btn-primary " >CREATE</button></a>
+
+  </section>
+  
